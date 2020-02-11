@@ -1,0 +1,8 @@
+<launch>
+
+  <arg name="scene" default="bimanual_computers"/>
+  <arg name="scene_file" value="$(find arq_ur5)/scenes/$(arg scene).scene"/>
+
+  <node name = "moveit_publish_scene_from_text" pkg= "moveit_ros_planning" type = "moveit_publish_scene_from_text" args= "$(arg scene_file)"/>
+
+</launch>

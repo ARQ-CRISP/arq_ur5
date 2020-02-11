@@ -1,0 +1,34 @@
+<launch>
+
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+
+  <!-- Choose moveit configuration wrt mounted hand -->
+  <arg name="allegro" default="false" doc="Mounted Allegro hand?" />
+
+  <arg name="manipulator" value="manipulator" unless="$(arg allegro)" />
+  <arg name="manipulator" value="ur5_arm" if="$(arg allegro)" />
+
+  <arg name="end_link" value="ee_link" unless="$(arg allegro)" />
+  <arg name="end_link" value="tool0" if="$(arg allegro)" />
+
+  <!-- Run without debugger -->
+  <node name="cartesian_move" pkg="arq_ur5"
+	type="cartesian_move_node" respawn="false" output="screen"
+  unless="$(arg debug)">
+
+  <param name="manipulator" value="$(arg manipulator)" />
+  <param name="end_link" value="$(arg end_link)" />
+  </node>
+
+  <!-- Run with GDB debugger -->
+  <node name="cartesian_move" pkg="arq_ur5"
+	type="cartesian_move_node" respawn="false" output="screen"
+	launch-prefix="terminator -x gdb --args"
+  if="$(arg debug)" >
+
+  <param name="manipulator" value="$(arg manipulator)" />
+  <param name="end_link" value="$(arg end_link)" />
+  </node>
+
+</launch>

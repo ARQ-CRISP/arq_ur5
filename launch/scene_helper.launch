@@ -1,0 +1,17 @@
+<launch>
+
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+
+  <!-- Run without debugger -->
+  <node name="arq_scene_helper" pkg="arq_ur5"
+	type="arq_scene_helper_test" respawn="false" output="screen"
+  unless="$(arg debug)" />
+
+  <!-- Run with GDB debugger -->
+  <node name="arq_scene_helper" pkg="arq_ur5"
+	type="arq_scene_helper_test" respawn="false" output="screen"
+	launch-prefix="terminator -x gdb --args"
+  if="$(arg debug)" />
+
+</launch>
